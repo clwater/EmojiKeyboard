@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+    
+    <RelativeLayout
+        android:layout_width="50dp"
+        android:layout_height="37dp"
+        android:layout_gravity="center"
+        android:background="#f9f9f9">
+
+        <ImageView
+            android:layout_width="25dp"
+            android:layout_height="26dp"
+            android:layout_centerInParent="true"
+            android:scaleType="centerInside"
+            android:id="@+id/imagview_bottom_icon"
+            android:src="@drawable/icon_emojikeyboard_emoji" />
+
+    </RelativeLayout>
+
+</LinearLayout>

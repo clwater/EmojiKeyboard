@@ -29,7 +29,7 @@ public class EmojiAdapter extends PagerAdapter {
     int showMaxColumns ;
     private int pageMaxCount = showMaxLines * showMaxColumns - 1;      //每个页面最多展示的emoji数量 此处不包括最后一个预留的删除
     private int maxViewWidth;
-
+    private int emojiSize = 28;
 
 
     public void setMaxLines(int showMaxLines) {
@@ -40,11 +40,13 @@ public class EmojiAdapter extends PagerAdapter {
         this.showMaxColumns = showMaxColumns;
     }
 
-    public EmojiAdapter(Context context, List<String> list , int maxViewWidth , int showMaxLines  , int showMaxColumns) {
+
+
+    public EmojiAdapter(Context context, List<String> list , int maxViewWidth , int showMaxLines  , int showMaxColumns , int emojiSize) {
         this.context = context;
         this.list = list;
         this.maxViewWidth = maxViewWidth;
-        this.showMaxColumns = maxViewWidth;
+        this.emojiSize = emojiSize;
         this.showMaxLines = showMaxLines;
         this.showMaxColumns = showMaxColumns;
         this.pageMaxCount = showMaxLines * showMaxColumns - 1;
@@ -117,10 +119,11 @@ public class EmojiAdapter extends PagerAdapter {
             linearLayoutIndex.setGravity(Gravity.CENTER);
 
             for (int i = index * showMaxColumns; i < (index + 1) * showMaxColumns; i++) {
-                 CustomTextView textView = new CustomTextView(context);
+                CustomTextView textView = new CustomTextView(context);
+                textView.setGravity(Gravity.CENTER);
                 textView.setBackground(context.getDrawable(R.drawable.user_select_bg));
                 linearLayoutIndex.addView(textView);
-                textView.setTextSize(28);
+                textView.setTextSize(emojiSize);
                 textView.getLayoutParams().width = maxViewWidth / showMaxColumns;
                 textView.setGravity(Gravity.CENTER);
 

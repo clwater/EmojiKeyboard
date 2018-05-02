@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
 
         emojiKeyboard.setMaxLines(5);
         emojiKeyboard.setMaxColumns(5);
+        emojiKeyboard.setIndicatorPadding(3);
 
         emojiKeyboard.init();
 

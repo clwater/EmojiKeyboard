@@ -11,39 +11,47 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <LinearLayout
-            android:id="@+id/linearlayout_emoji_class"
+        <android.support.v7.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="37dp"
-            android:layout_alignParentBottom="true">
+            android:layout_alignParentBottom="true"
+            android:id="@+id/recycleview_emoji_class"/>
 
-            <RelativeLayout
-                android:layout_width="50dp"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:background="#f9f9f9">
+        <!--<LinearLayout-->
+            <!--android:id="@+id/linearlayout_emoji_class"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="37dp"-->
+            <!--&gt;-->
 
-                <ImageView
-                    android:layout_width="21dp"
-                    android:layout_height="26dp"
-                    android:layout_centerInParent="true"
-                    android:src="@drawable/icon_emojikeyboard_emoji" />
+            <!--<RelativeLayout-->
+                <!--android:layout_width="50dp"-->
+                <!--android:layout_height="37dp"-->
+                <!--android:layout_gravity="center"-->
+                <!--android:background="#f9f9f9">-->
 
-            </RelativeLayout>
-        </LinearLayout>
+                <!--<ImageView-->
+                    <!--android:layout_width="25dp"-->
+                    <!--android:layout_height="26dp"-->
+                    <!--android:layout_centerInParent="true"-->
+                    <!--android:scaleType="centerInside"-->
+                    <!--android:src="@drawable/icon_emojikeyboard_emoji" />-->
+
+            <!--</RelativeLayout>-->
+        <!--</LinearLayout>-->
 
         <android.support.v4.view.ViewPager
             android:id="@+id/viewpager_emojikeyboard"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_above="@id/linearlayout_emoji_class" />
+            android:overScrollMode="never"
+            android:layout_above="@id/recycleview_emoji_class" />
 
         <clwater.library.emojikeyboard.EmojiIndicatorLinearLayout
             android:id="@+id/emojiIndicatorLinearLayout_emoji"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_above="@id/linearlayout_emoji_class"
-            android:layout_marginBottom="10dp"
+            android:layout_above="@id/recycleview_emoji_class"
+
             android:gravity="center_horizontal" />
     </RelativeLayout>
 
