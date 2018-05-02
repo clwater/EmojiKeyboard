@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    android:orientation="vertical">
+
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:id="@+id/editText"/>
+    <clwater.library.emojikeyboard.EmojiKeyboard
+        android:layout_width="match_parent"
+        android:layout_height="263dp"
+        android:id="@+id/emojiKeyboard"/>
+    <!--<clwater.emojikeyboard.CustomTextView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:id="@+id/emojiTextview"-->
+        <!--/>-->
+</LinearLayout>
