@@ -25,17 +25,29 @@ public class EmojiAdapter extends PagerAdapter {
 
 
     private int maxIndex = 0;           //展示的页数
-    int showMaxLinex = 4;
-    int showMaxColumns = 5;
-    private int pageMaxCount = showMaxLinex * showMaxColumns - 1;      //每个页面最多展示的emoji数量 此处不包括最后一个预留的删除
+    int showMaxLines ;
+    int showMaxColumns ;
+    private int pageMaxCount = showMaxLines * showMaxColumns - 1;      //每个页面最多展示的emoji数量 此处不包括最后一个预留的删除
     private int maxViewWidth;
 
 
 
-    public EmojiAdapter(Context context, List<String> list , int maxViewWidth) {
+    public void setMaxLines(int showMaxLines) {
+        this.showMaxLines = showMaxLines;
+    }
+
+    public void setMaxColumns(int showMaxColumns) {
+        this.showMaxColumns = showMaxColumns;
+    }
+
+    public EmojiAdapter(Context context, List<String> list , int maxViewWidth , int showMaxLines  , int showMaxColumns) {
         this.context = context;
         this.list = list;
         this.maxViewWidth = maxViewWidth;
+        this.showMaxColumns = maxViewWidth;
+        this.showMaxLines = showMaxLines;
+        this.showMaxColumns = showMaxColumns;
+        this.pageMaxCount = showMaxLines * showMaxColumns - 1;
         initList();
     }
 
@@ -94,7 +106,7 @@ public class EmojiAdapter extends PagerAdapter {
 
 
         //分成三行展示
-        for (int index = 0; index < showMaxLinex; index++) {
+        for (int index = 0; index < showMaxLines; index++) {
             LinearLayout linearLayoutIndex = new LinearLayout(context);
             linearLayout.addView(linearLayoutIndex);
 

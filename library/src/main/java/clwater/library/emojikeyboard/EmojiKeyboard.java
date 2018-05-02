@@ -2,6 +2,8 @@ package clwater.library.emojikeyboard;
 
 import android.content.Context;
 import android.support.annotation.Nullable;
+import android.support.text.emoji.EmojiCompat;
+import android.support.text.emoji.bundled.BundledEmojiCompatConfig;
 import android.support.v4.view.ViewPager;
 import android.text.Editable;
 import android.util.AttributeSet;
@@ -36,14 +38,12 @@ public class EmojiKeyboard extends LinearLayout {
     public EmojiKeyboard(Context context) {
         super(context);
         this.context = context;
-        initView();
 
     }
 
     public EmojiKeyboard(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         this.context = context;
-        initView();
 
     }
 
@@ -52,6 +52,21 @@ public class EmojiKeyboard extends LinearLayout {
     }
 
     boolean init = true;
+
+    public void  init(){
+        initView();
+    }
+
+    int maxLinex = 3;
+    int maxColumns = 7;
+
+    public void setMaxLines(int maxLinex){
+        this.maxLinex = maxLinex;
+    }
+
+    public void setMaxColumns(int maxColumns) {
+        this.maxColumns = maxColumns;
+    }
 
     public void initView() {
         LayoutInflater.from(context).inflate(R.layout.emoji_keyobard, this);
@@ -68,7 +83,7 @@ public class EmojiKeyboard extends LinearLayout {
                     init = false;
                     maxViewWidth = linearLayout_emoji.getWidth();
                     List<String> list = initList();
-                    emojiAdapter = new EmojiAdapter(context, list , maxViewWidth);
+                    emojiAdapter = new EmojiAdapter(context, list , maxViewWidth , maxLinex , maxColumns);
                     //通过构建后的EmojiAdapter获取底部指示器的范围
                     emojiIndicatorLinearLayout_emoji.setMaxCount(emojiAdapter.getCount());
 

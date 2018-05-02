@@ -1,10 +1,6 @@
 package clwater.emojikeyboard;
 
-import android.support.text.emoji.EmojiCompat;
-import android.support.text.emoji.bundled.BundledEmojiCompatConfig;
-import android.support.text.emoji.widget.EmojiAppCompatTextView;
-import android.support.text.emoji.widget.EmojiEditText;
-import android.support.text.emoji.widget.EmojiTextView;
+
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.EditText;
@@ -23,8 +19,11 @@ public class MainActivity extends AppCompatActivity {
 
         EmojiKeyboard emojiKeyboard = findViewById(R.id.emojiKeyboard);
         emojiKeyboard.setEditText(editText);
-//
-//        CustomTextView emojiTextview = findViewById(R.id.emojiTextview);
-//        emojiTextview.setText("\uD83D\uDE01");
+
+        emojiKeyboard.setMaxLines(5);
+        emojiKeyboard.setMaxColumns(5);
+
+        emojiKeyboard.init();
+
     }
 }
