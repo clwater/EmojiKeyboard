@@ -1,7 +1,9 @@
 package clwater.library.emojikeyboard;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,19 +23,20 @@ import clwater.library.R;
 
 
 public class BottomClassAdapter extends RecyclerView.Adapter<BottomClassAdapter.BottomClassViewHolder> {
-    private final LayoutInflater mLayoutInflater;
-    private final Context mContext;
-    private List<String> tips;
+    private final LayoutInflater layoutInflater;
+    private final Context context;
+    private List<Drawable> tips;
     private ItemOnClick itemOnClick;
     private int itemIndex = 0;
+    private Drawable baseDrawable ;
+    private int itemSize ;
 
-    public BottomClassAdapter(Context context) {
-        tips = new ArrayList<>();
-        tips.add("1");
-        tips.add("2");
-        tips.add("3");
-        mContext = context;
-        mLayoutInflater = LayoutInflater.from(context);
+    public BottomClassAdapter(Context context , List<Drawable> tips , int itemSize) {
+        this.context = context;
+        this.tips = tips;
+        this.itemSize = itemSize;
+        this.layoutInflater = LayoutInflater.from(context);
+        baseDrawable = context.getDrawable(R.drawable.icon_emojikeyboard_emoji);
     }
 
     public void setItemOnClick(ItemOnClick itemOnClick){
@@ -42,7 +45,7 @@ public class BottomClassAdapter extends RecyclerView.Adapter<BottomClassAdapter.
 
     @Override
     public BottomClassViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new BottomClassViewHolder(mLayoutInflater.inflate(R.layout.emoji_adapter, parent, false));
+        return new BottomClassViewHolder(layoutInflater.inflate(R.layout.emoji_adapter, parent, false));
     }
 
     @Override
@@ -52,12 +55,16 @@ public class BottomClassAdapter extends RecyclerView.Adapter<BottomClassAdapter.
         }else {
             holder.relative_bottom_bg.setBackgroundColor(Color.parseColor("#ffffff"));
         }
-        holder.imagview_bottom_icon.setImageDrawable(mContext.getDrawable(R.drawable.icon_emojikeyboard_emoji));
+        if (tips.size() > position  ){
+            holder.imagview_bottom_icon.setImageDrawable(tips.get(position));
+        }else {
+            holder.imagview_bottom_icon.setImageDrawable(baseDrawable);
+        }
     }
 
     @Override
     public int getItemCount() {
-        return tips.size();
+        return itemSize;
     }
 
     public void  changeBottomItem(int position){

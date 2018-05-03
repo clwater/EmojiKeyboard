@@ -1,10 +1,8 @@
 package clwater.library.emojikeyboard;
 
 import android.content.Context;
-import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.Nullable;
-import android.support.text.emoji.EmojiCompat;
-import android.support.text.emoji.bundled.BundledEmojiCompatConfig;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -42,7 +40,7 @@ public class EmojiKeyboard extends LinearLayout {
     private int maxViewWidth ;
     private EmojiAdapter emojiAdapter;
 
-
+    List<Drawable> tips = new ArrayList<>();
     int maxLinex = 3;
     int maxColumns = 7 ;
     private int emojiSize = 28;
@@ -63,6 +61,10 @@ public class EmojiKeyboard extends LinearLayout {
         super(context, attrs);
         this.context = context;
 
+    }
+
+    public void setTips(List<Drawable> tips) {
+        this.tips = tips;
     }
 
     public void setEditText(EditText editText) {
@@ -137,7 +139,11 @@ public class EmojiKeyboard extends LinearLayout {
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         recycleview_emoji_class.setLayoutManager(linearLayoutManager);
 
-        bottomClassAdapter = new BottomClassAdapter(context);
+        if (tips.size() != 0) {
+            tips = tips.subList(0, listInfo.size());
+        }
+
+        bottomClassAdapter = new BottomClassAdapter(context , tips , listInfo.size());
         bottomClassAdapter.setItemOnClick(new BottomClassAdapter.ItemOnClick() {
             @Override
             public void itemOnClick(int position) {
