@@ -49,6 +49,7 @@ public class EmojiKeyboard extends LinearLayout {
     private int itemIndex = 0;
     private int minItemIndex ;
     private int maxItemIndex ;
+    private List<List<String>> lists;
 
 
     public EmojiKeyboard(Context context) {
@@ -61,6 +62,10 @@ public class EmojiKeyboard extends LinearLayout {
         super(context, attrs);
         this.context = context;
 
+    }
+
+    public void setLists(List<List<String>> lists) {
+        this.lists = lists;
     }
 
     public void setTips(List<Drawable> tips) {
@@ -110,7 +115,6 @@ public class EmojiKeyboard extends LinearLayout {
                 if (init) {
                     init = false;
                     maxViewWidth = linearLayout_emoji.getWidth();
-                    List<List<String>> lists = EomjiSource.getLists();
                     emojiAdapter = new EmojiAdapter(context, lists , maxViewWidth , maxLinex , maxColumns ,  emojiSize);
                     //通过构建后的EmojiAdapter获取底部指示器的范围
 
@@ -139,7 +143,7 @@ public class EmojiKeyboard extends LinearLayout {
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         recycleview_emoji_class.setLayoutManager(linearLayoutManager);
 
-        if (tips.size() != 0) {
+        if (tips.size() != 0 && listInfo.size() <  tips.size()) {
             tips = tips.subList(0, listInfo.size());
         }
 
