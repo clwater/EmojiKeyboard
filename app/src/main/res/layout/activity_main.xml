@@ -6,18 +6,16 @@
     tools:context=".MainActivity"
     android:orientation="vertical">
 
-
     <EditText
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="bottom"
         android:id="@+id/editText"/>
+
     <clwater.library.emojikeyboard.EmojiKeyboard
         android:layout_width="match_parent"
         android:layout_height="263dp"
         android:id="@+id/emojiKeyboard"/>
-    <!--<clwater.emojikeyboard.CustomTextView-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:id="@+id/emojiTextview"-->
-        <!--/>-->
+
 </LinearLayout>

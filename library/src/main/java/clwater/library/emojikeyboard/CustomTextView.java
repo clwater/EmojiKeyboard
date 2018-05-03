@@ -42,7 +42,7 @@ public class CustomTextView extends AppCompatTextView {
 
     /**
      * Returns the {@link EmojiTextViewHelper} for this TextView.
-     *
+     * <p>
      * <p>This method can be called from super constructors through {@link
      * #setFilters(InputFilter[])} or {@link #setAllCaps(boolean)}.</p>
      */

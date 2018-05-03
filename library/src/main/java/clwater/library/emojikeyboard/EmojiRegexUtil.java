@@ -2,6 +2,9 @@ package clwater.library.emojikeyboard;
 
 import java.util.regex.Pattern;
 
+/**
+ * 验证是否为emoji的工具
+ */
 public class EmojiRegexUtil {
     private static final String MiscellaneousSymbolsAndPictographs = "[\\uD83C\\uDF00-\\uD83D\\uDDFF]";
 

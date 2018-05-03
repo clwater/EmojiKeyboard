@@ -52,7 +52,6 @@ public class EmojiIndicatorLinearLayout extends LinearLayout {
     }
 
     public void setChoose(int chooseItem) {
-//        chooseItem = chooseItem - 1;
         if (chooseItem < 0) {
             chooseItem = 0;
         } else if (chooseItem > maxCount) {

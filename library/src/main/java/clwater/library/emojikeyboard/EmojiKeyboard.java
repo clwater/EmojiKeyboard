@@ -1,7 +1,6 @@
 package clwater.library.emojikeyboard;
 
 import android.content.Context;
-import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
@@ -9,9 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -24,48 +21,42 @@ import clwater.library.R;
 
 /**
  * Emoji输入选择器
- * 使用:
- * 1:在xml文件中引入(高度建议为263)
- * 2.绑定EditText(通过setEditText()方法)
- * 注意:
- * 1.当展示时应关闭系统键盘,离开时打开
  */
 public class EmojiKeyboard extends LinearLayout {
 
     private Context context;
+
     private LinearLayout linearLayout_emoji;
     private ViewPager viewpager_emojikeyboard;
     private RecyclerView recycleview_emoji_class;
     private EmojiIndicatorLinearLayout emojiIndicatorLinearLayout_emoji;
     private BottomClassAdapter bottomClassAdapter;
     private EditText editText;
-    private int maxViewWidth ;
     private EmojiAdapter emojiAdapter;
 
-    List<Drawable> tips = new ArrayList<>();
-    int maxLinex = 3;
-    int maxColumns = 7 ;
-    private int emojiSize = 28;
-    private int indicatorPadding = 10;
-    private List<Integer> listInfo = new ArrayList<>();
-    private int itemIndex = 0;
-    private int minItemIndex ;
-    private int maxItemIndex ;
-    private List<List<String>> lists;
-    private int bottomOffset = 0;
+    private List<List<String>> lists;           //数据源
 
+    private List<Drawable> tips = new ArrayList<>();    //底部图标信息
+    private List<Integer> listInfo = new ArrayList<>(); //输入器分页情况
+
+    int maxLinex = 3;       //行数
+    int maxColumns = 7;    //列数
+    private int emojiSize = 26; //字体大小
+    private int indicatorPadding = 10;  //底部指示器距离
+    private int itemIndex = 0;          //当前选择页面
+    private int minItemIndex;           //当前条目页面最小位置
+    private int maxItemIndex;           //当前条目页面最大位置
+    private int maxViewWidth;           //页面宽度
 
 
     public EmojiKeyboard(Context context) {
         super(context);
         this.context = context;
-
     }
 
     public EmojiKeyboard(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         this.context = context;
-
     }
 
     public void setLists(List<List<String>> lists) {
@@ -82,10 +73,9 @@ public class EmojiKeyboard extends LinearLayout {
 
     boolean init = true;
 
-    public void  init(){
+    public void init() {
         initView();
     }
-
 
 
     public void setEmojiSize(int emojiSize) {
@@ -96,7 +86,7 @@ public class EmojiKeyboard extends LinearLayout {
         this.indicatorPadding = indicatorPadding;
     }
 
-    public void setMaxLines(int maxLinex){
+    public void setMaxLines(int maxLinex) {
         this.maxLinex = maxLinex;
     }
 
@@ -119,24 +109,30 @@ public class EmojiKeyboard extends LinearLayout {
                 if (init) {
                     init = false;
                     maxViewWidth = linearLayout_emoji.getWidth();
-                    emojiAdapter = new EmojiAdapter(context, lists , maxViewWidth , maxLinex , maxColumns ,  emojiSize);
+                    emojiAdapter = new EmojiAdapter(context, lists, maxViewWidth, maxLinex, maxColumns, emojiSize);
                     //通过构建后的EmojiAdapter获取底部指示器的范围
 
                     listInfo = emojiAdapter.getListInfo();
+                    viewpager_emojikeyboard.setAdapter(emojiAdapter);
+
+
                     minItemIndex = 0;
                     maxItemIndex = listInfo.get(itemIndex);
 
+                    //初始化底部指示器信息
                     emojiIndicatorLinearLayout_emoji.setMaxCount(listInfo.get(itemIndex));
-                    emojiIndicatorLinearLayout_emoji.setPadding(0 , 0 , 0 , ViewUtils.dip2px(context , indicatorPadding));
+                    emojiIndicatorLinearLayout_emoji.setPadding(0, 0, 0, ViewUtils.dip2px(context, indicatorPadding));
 
-                    viewpager_emojikeyboard.setAdapter(emojiAdapter);
 
+                    //初始化底部icon
                     initBottomClass();
+                    //为ViewPager添加滑动监听
                     initViewPageChangeListener();
                     //设置emoji点击的回调
                     initEmojiOnClick();
                 }
 
+                viewpager_emojikeyboard.getViewTreeObserver().removeOnPreDrawListener(this);
                 return true;
             }
         });
@@ -147,11 +143,11 @@ public class EmojiKeyboard extends LinearLayout {
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         recycleview_emoji_class.setLayoutManager(linearLayoutManager);
 
-        if (tips.size() != 0 && listInfo.size() <  tips.size()) {
+        if (tips.size() != 0 && listInfo.size() < tips.size()) {
             tips = tips.subList(0, listInfo.size());
         }
 
-        bottomClassAdapter = new BottomClassAdapter(context , tips , listInfo.size());
+        bottomClassAdapter = new BottomClassAdapter(context, tips, listInfo.size());
         bottomClassAdapter.setItemOnClick(new BottomClassAdapter.ItemOnClick() {
             @Override
             public void itemOnClick(int position) {
@@ -159,13 +155,6 @@ public class EmojiKeyboard extends LinearLayout {
             }
         });
         recycleview_emoji_class.setAdapter(bottomClassAdapter);
-        recycleview_emoji_class.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                bottomOffset += dx;
-            }
-        });
     }
 
     private void initViewPageChangeListener() {
@@ -176,26 +165,28 @@ public class EmojiKeyboard extends LinearLayout {
 
             @Override
             public void onPageSelected(int position) {
+                //滑动后更新底部指示器
                 touchChangeBottomClass(position);
-                //更新底部指示器
             }
 
             @Override
             public void onPageScrollStateChanged(int state) {
-
             }
         });
     }
 
-    private void clickChangeBottomClass(int clickItemIndex){
+    /**
+     * @param clickItemIndex 点击后更新指示器
+     */
+    private void clickChangeBottomClass(int clickItemIndex) {
         itemIndex = clickItemIndex;
         maxItemIndex = 0;
         minItemIndex = 0;
-        for (int i = 0 ; i <= itemIndex ; i++){
+        for (int i = 0; i <= itemIndex; i++) {
             maxItemIndex += listInfo.get(i);
         }
 
-        for (int i = 0 ; i < itemIndex ; i++){
+        for (int i = 0; i < itemIndex; i++) {
             minItemIndex += listInfo.get(i);
         }
 
@@ -208,32 +199,36 @@ public class EmojiKeyboard extends LinearLayout {
         emojiIndicatorLinearLayout_emoji.setChoose(0);
     }
 
+    /**
+     * @param position 滑动后更新底部指示器
+     */
     private void touchChangeBottomClass(int position) {
-        if (position >= maxItemIndex ){
-            itemIndex ++;
+        //判断滑动是否越界
+        if (position >= maxItemIndex) {
+            itemIndex++;
 
             maxItemIndex = 0;
             minItemIndex = 0;
-            for (int i = 0 ; i <= itemIndex ; i++){
+            for (int i = 0; i <= itemIndex; i++) {
                 maxItemIndex += listInfo.get(i);
             }
 
-            for (int i = 0 ; i < itemIndex ; i++){
+            for (int i = 0; i < itemIndex; i++) {
                 minItemIndex += listInfo.get(i);
             }
 
             emojiIndicatorLinearLayout_emoji.setMaxCount(listInfo.get(itemIndex));
             emojiIndicatorLinearLayout_emoji.setChoose(0);
-        }else if (position < minItemIndex){
-            itemIndex --;
+        } else if (position < minItemIndex) {
+            itemIndex--;
 
             maxItemIndex = 0;
             minItemIndex = 0;
-            for (int i = 0 ; i <= itemIndex ; i++){
+            for (int i = 0; i <= itemIndex; i++) {
                 maxItemIndex += listInfo.get(i);
             }
 
-            for (int i = 0 ; i < itemIndex ; i++){
+            for (int i = 0; i < itemIndex; i++) {
                 minItemIndex += listInfo.get(i);
             }
 
@@ -249,10 +244,6 @@ public class EmojiKeyboard extends LinearLayout {
     }
 
     private void changeBottomClassIcon() {
-//        if (lastItemChoose == itemIndex){
-//            return;
-//        }
-//        lastItemChoose = itemIndex;
         bottomClassAdapter.changeBottomItem(itemIndex);
 
 
@@ -264,7 +255,6 @@ public class EmojiKeyboard extends LinearLayout {
             recycleview_emoji_class.smoothScrollToPosition(itemIndex);
         }
     }
-
 
 
     private void initEmojiOnClick() {
@@ -305,6 +295,5 @@ public class EmojiKeyboard extends LinearLayout {
             }
         });
     }
-
 
 }

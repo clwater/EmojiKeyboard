@@ -5,7 +5,6 @@ import android.content.Context;
 import android.os.Build;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,27 +25,18 @@ public class EmojiAdapter extends PagerAdapter {
     private EmojiTextOnClick emojiOnClick;
 
 
-    private int maxIndex = 0;           //展示的页数
-    int showMaxLines ;
-    int showMaxColumns ;
-    private int pageMaxCount ;      //每个页面最多展示的emoji数量 此处不包括最后一个预留的删除
-    private int maxViewWidth;
-    private int emojiSize = 28;
-
-
-    public void setMaxLines(int showMaxLines) {
-        this.showMaxLines = showMaxLines;
-    }
-
-    public void setMaxColumns(int showMaxColumns) {
-        this.showMaxColumns = showMaxColumns;
-    }
+    private int maxIndex = 0;       //展示的页数
+    int showMaxLines;               //行数
+    int showMaxColumns;             //列数
+    private int pageMaxCount;       //每个页面最多展示的emoji数量 此处不包括最后一个预留的删除
+    private int maxViewWidth;       //页面宽度
+    private int emojiSize;          //字体大小
 
     public List<Integer> getListInfo() {
         return listInfo;
     }
 
-    public EmojiAdapter(Context context, List<List<String>> listSource , int maxViewWidth , int showMaxLines  , int showMaxColumns , int emojiSize) {
+    public EmojiAdapter(Context context, List<List<String>> listSource, int maxViewWidth, int showMaxLines, int showMaxColumns, int emojiSize) {
         this.context = context;
         this.listSource = listSource;
         this.maxViewWidth = maxViewWidth;
@@ -106,7 +96,6 @@ public class EmojiAdapter extends PagerAdapter {
     public void setEmojiOnClick(EmojiTextOnClick emojiOnClick) {
         this.emojiOnClick = emojiOnClick;
     }
-
 
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
