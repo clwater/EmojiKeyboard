@@ -1,6 +1,7 @@
 package clwater.library.emojikeyboard;
 
 import android.content.Context;
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
@@ -10,6 +11,7 @@ import android.text.Editable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -50,6 +52,8 @@ public class EmojiKeyboard extends LinearLayout {
     private int minItemIndex ;
     private int maxItemIndex ;
     private List<List<String>> lists;
+    private int bottomOffset = 0;
+
 
 
     public EmojiKeyboard(Context context) {
@@ -155,6 +159,13 @@ public class EmojiKeyboard extends LinearLayout {
             }
         });
         recycleview_emoji_class.setAdapter(bottomClassAdapter);
+        recycleview_emoji_class.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                bottomOffset += dx;
+            }
+        });
     }
 
     private void initViewPageChangeListener() {
@@ -190,6 +201,7 @@ public class EmojiKeyboard extends LinearLayout {
 
 
         viewpager_emojikeyboard.setCurrentItem(minItemIndex);
+        changeBottomClassIcon();
 
 
         emojiIndicatorLinearLayout_emoji.setMaxCount(listInfo.get(itemIndex));
@@ -236,15 +248,24 @@ public class EmojiKeyboard extends LinearLayout {
         changeBottomClassIcon();
     }
 
-    int lastItemChoose = 0;
     private void changeBottomClassIcon() {
-        if (lastItemChoose == itemIndex){
-            return;
-        }
-        lastItemChoose = itemIndex;
+//        if (lastItemChoose == itemIndex){
+//            return;
+//        }
+//        lastItemChoose = itemIndex;
         bottomClassAdapter.changeBottomItem(itemIndex);
 
+
+        int firstItem = recycleview_emoji_class.getChildLayoutPosition(recycleview_emoji_class.getChildAt(0));
+        int lastItem = recycleview_emoji_class.getChildLayoutPosition(recycleview_emoji_class.getChildAt(recycleview_emoji_class.getChildCount() - 1));
+
+
+        if (itemIndex <= firstItem || itemIndex >= lastItem) {
+            recycleview_emoji_class.scrollToPosition(itemIndex);
+        }
     }
+
+
 
     private void initEmojiOnClick() {
         emojiAdapter.setEmojiOnClick(new EmojiAdapter.EmojiTextOnClick() {
