@@ -35,9 +35,12 @@ public class MainActivity extends AppCompatActivity {
 
         //底部图标(如不设置则使用默认图标)
         List<Drawable> tips = new ArrayList<>();
-        tips.add(this.getDrawable(R.drawable.icon_emojikeyboard_emoji));
-        tips.add(this.getDrawable(R.drawable.icon_emojikeyboard_emoji));
-        tips.add(this.getDrawable(R.drawable.icon_emojikeyboard_emoji));
+        tips.add(this.getDrawable(R.drawable.icon_emoji_1));
+        tips.add(this.getDrawable(R.drawable.icon_emoji_2));
+        tips.add(this.getDrawable(R.drawable.icon_emoji_3));
+        tips.add(this.getDrawable(R.drawable.icon_emoji_4));
+        tips.add(this.getDrawable(R.drawable.icon_emoji_5));
+        tips.add(this.getDrawable(R.drawable.icon_emoji_6));
 
 
         EmojiKeyboard emojiKeyboard = findViewById(R.id.emojiKeyboard);
