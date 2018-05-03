@@ -20,9 +20,9 @@ public class MainActivity extends AppCompatActivity {
         EmojiKeyboard emojiKeyboard = findViewById(R.id.emojiKeyboard);
         emojiKeyboard.setEditText(editText);
 
-        emojiKeyboard.setMaxLines(5);
-        emojiKeyboard.setMaxColumns(5);
-        emojiKeyboard.setIndicatorPadding(3);
+        emojiKeyboard.setMaxLines(3);
+        emojiKeyboard.setMaxColumns(7);
+//        emojiKeyboard.setIndicatorPadding(3);
 
         emojiKeyboard.init();
 

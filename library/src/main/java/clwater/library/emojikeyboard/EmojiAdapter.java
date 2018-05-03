@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Build;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +20,8 @@ import clwater.library.R;
 
 public class EmojiAdapter extends PagerAdapter {
     private Context context;
-    private List<String> list;
+    private List<List<String>> listSource;
+    private List<Integer> listInfo = new ArrayList<>();
     private List<List<String>> lists = new ArrayList<>();
     private EmojiTextOnClick emojiOnClick;
 
@@ -27,7 +29,7 @@ public class EmojiAdapter extends PagerAdapter {
     private int maxIndex = 0;           //展示的页数
     int showMaxLines ;
     int showMaxColumns ;
-    private int pageMaxCount = showMaxLines * showMaxColumns - 1;      //每个页面最多展示的emoji数量 此处不包括最后一个预留的删除
+    private int pageMaxCount ;      //每个页面最多展示的emoji数量 此处不包括最后一个预留的删除
     private int maxViewWidth;
     private int emojiSize = 28;
 
@@ -40,11 +42,13 @@ public class EmojiAdapter extends PagerAdapter {
         this.showMaxColumns = showMaxColumns;
     }
 
+    public List<Integer> getListInfo() {
+        return listInfo;
+    }
 
-
-    public EmojiAdapter(Context context, List<String> list , int maxViewWidth , int showMaxLines  , int showMaxColumns , int emojiSize) {
+    public EmojiAdapter(Context context, List<List<String>> listSource , int maxViewWidth , int showMaxLines  , int showMaxColumns , int emojiSize) {
         this.context = context;
-        this.list = list;
+        this.listSource = listSource;
         this.maxViewWidth = maxViewWidth;
         this.emojiSize = emojiSize;
         this.showMaxLines = showMaxLines;
@@ -62,20 +66,29 @@ public class EmojiAdapter extends PagerAdapter {
      * 根据每个页面展示效果,序列化lists
      */
     private void initList() {
-        int listSize = list.size();
-        maxIndex = listSize / pageMaxCount + 1;
-        for (int i = 0; i < maxIndex; i++) {
-            List<String> tempList = new ArrayList<>();
+        for (List<String> list : listSource) {
 
-            for (int j = 0; j < pageMaxCount; j++) {
-                int index = i * pageMaxCount + j;
-                if (index < listSize) {
-                    tempList.add(list.get(index));
-                } else {
-                    j = pageMaxCount;
-                }
+            int listSize = list.size();
+            int itemMaxIndex = listSize / pageMaxCount;
+            if (listSize % pageMaxCount != 0) {
+                itemMaxIndex += 1;
             }
-            lists.add(tempList);
+            listInfo.add(itemMaxIndex);
+            maxIndex += itemMaxIndex;
+
+            for (int i = 0; i < itemMaxIndex; i++) {
+                List<String> tempList = new ArrayList<>();
+
+                for (int j = 0; j < pageMaxCount; j++) {
+                    int index = i * pageMaxCount + j;
+                    if (index < listSize) {
+                        tempList.add(list.get(index));
+                    } else {
+                        j = pageMaxCount;
+                    }
+                }
+                lists.add(tempList);
+            }
         }
 
     }

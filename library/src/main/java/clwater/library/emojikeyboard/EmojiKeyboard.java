@@ -10,6 +10,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewTreeObserver;
 import android.widget.EditText;
@@ -36,9 +37,22 @@ public class EmojiKeyboard extends LinearLayout {
     private ViewPager viewpager_emojikeyboard;
     private RecyclerView recycleview_emoji_class;
     private EmojiIndicatorLinearLayout emojiIndicatorLinearLayout_emoji;
+    private BottomClassAdapter bottomClassAdapter;
     private EditText editText;
     private int maxViewWidth ;
     private EmojiAdapter emojiAdapter;
+
+
+    int maxLinex = 3;
+    int maxColumns = 7 ;
+    private int emojiSize = 28;
+    private int indicatorPadding = 10;
+    private List<Integer> listInfo = new ArrayList<>();
+    private int itemIndex = 0;
+    private int minItemIndex ;
+    private int maxItemIndex ;
+
+
     public EmojiKeyboard(Context context) {
         super(context);
         this.context = context;
@@ -61,10 +75,7 @@ public class EmojiKeyboard extends LinearLayout {
         initView();
     }
 
-    int maxLinex = 3;
-    int maxColumns = 7 ;
-    private int emojiSize = 28;
-    private int indicatorPadding = 10;
+
 
     public void setEmojiSize(int emojiSize) {
         this.emojiSize = emojiSize;
@@ -97,10 +108,15 @@ public class EmojiKeyboard extends LinearLayout {
                 if (init) {
                     init = false;
                     maxViewWidth = linearLayout_emoji.getWidth();
-                    List<String> list = initList();
-                    emojiAdapter = new EmojiAdapter(context, list , maxViewWidth , maxLinex , maxColumns ,  emojiSize);
+                    List<List<String>> lists = EomjiSource.getLists();
+                    emojiAdapter = new EmojiAdapter(context, lists , maxViewWidth , maxLinex , maxColumns ,  emojiSize);
                     //通过构建后的EmojiAdapter获取底部指示器的范围
-                    emojiIndicatorLinearLayout_emoji.setMaxCount(emojiAdapter.getCount());
+
+                    listInfo = emojiAdapter.getListInfo();
+                    minItemIndex = 0;
+                    maxItemIndex = listInfo.get(itemIndex);
+
+                    emojiIndicatorLinearLayout_emoji.setMaxCount(listInfo.get(itemIndex));
                     emojiIndicatorLinearLayout_emoji.setPadding(0 , 0 , 0 , ViewUtils.dip2px(context , indicatorPadding));
 
                     viewpager_emojikeyboard.setAdapter(emojiAdapter);
@@ -121,7 +137,13 @@ public class EmojiKeyboard extends LinearLayout {
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         recycleview_emoji_class.setLayoutManager(linearLayoutManager);
 
-        BottomClassAdapter bottomClassAdapter = new BottomClassAdapter(context);
+        bottomClassAdapter = new BottomClassAdapter(context);
+        bottomClassAdapter.setItemOnClick(new BottomClassAdapter.ItemOnClick() {
+            @Override
+            public void itemOnClick(int position) {
+                clickChangeBottomClass(position);
+            }
+        });
         recycleview_emoji_class.setAdapter(bottomClassAdapter);
     }
 
@@ -133,8 +155,8 @@ public class EmojiKeyboard extends LinearLayout {
 
             @Override
             public void onPageSelected(int position) {
+                touchChangeBottomClass(position);
                 //更新底部指示器
-                emojiIndicatorLinearLayout_emoji.setChoose(position + 1);
             }
 
             @Override
@@ -142,6 +164,76 @@ public class EmojiKeyboard extends LinearLayout {
 
             }
         });
+    }
+
+    private void clickChangeBottomClass(int clickItemIndex){
+        itemIndex = clickItemIndex;
+        maxItemIndex = 0;
+        minItemIndex = 0;
+        for (int i = 0 ; i <= itemIndex ; i++){
+            maxItemIndex += listInfo.get(i);
+        }
+
+        for (int i = 0 ; i < itemIndex ; i++){
+            minItemIndex += listInfo.get(i);
+        }
+
+
+        viewpager_emojikeyboard.setCurrentItem(minItemIndex);
+
+
+        emojiIndicatorLinearLayout_emoji.setMaxCount(listInfo.get(itemIndex));
+        emojiIndicatorLinearLayout_emoji.setChoose(0);
+    }
+
+    private void touchChangeBottomClass(int position) {
+        if (position >= maxItemIndex ){
+            itemIndex ++;
+
+            maxItemIndex = 0;
+            minItemIndex = 0;
+            for (int i = 0 ; i <= itemIndex ; i++){
+                maxItemIndex += listInfo.get(i);
+            }
+
+            for (int i = 0 ; i < itemIndex ; i++){
+                minItemIndex += listInfo.get(i);
+            }
+
+            emojiIndicatorLinearLayout_emoji.setMaxCount(listInfo.get(itemIndex));
+            emojiIndicatorLinearLayout_emoji.setChoose(0);
+        }else if (position < minItemIndex){
+            itemIndex --;
+
+            maxItemIndex = 0;
+            minItemIndex = 0;
+            for (int i = 0 ; i <= itemIndex ; i++){
+                maxItemIndex += listInfo.get(i);
+            }
+
+            for (int i = 0 ; i < itemIndex ; i++){
+                minItemIndex += listInfo.get(i);
+            }
+
+            emojiIndicatorLinearLayout_emoji.setMaxCount(listInfo.get(itemIndex));
+            emojiIndicatorLinearLayout_emoji.setChoose(listInfo.get(itemIndex) - 1);
+        } else {
+            position -= minItemIndex;
+
+            emojiIndicatorLinearLayout_emoji.setChoose(position);
+        }
+
+        changeBottomClassIcon();
+    }
+
+    int lastItemChoose = 0;
+    private void changeBottomClassIcon() {
+        if (lastItemChoose == itemIndex){
+            return;
+        }
+        lastItemChoose = itemIndex;
+        bottomClassAdapter.changeBottomItem(itemIndex);
+
     }
 
     private void initEmojiOnClick() {
@@ -183,227 +275,5 @@ public class EmojiKeyboard extends LinearLayout {
         });
     }
 
-    /**
-     * @return 暂定的emoji列表
-     * 可以通过https://apps.timwhitlock.info/emoji/tables/unicode 查看相关内容
-     */
-    private List<String> initList() {
-//        int version = android.os.Build.VERSION.SDK_INT;
-        int version = 24;
-        List<String> list = new ArrayList<>();
 
-        //7.0及以上系统
-        if (version >= 24){
-            list.add("\uD83D\uDE01");
-            list.add("\uD83D\uDE11");
-            list.add("\uD83D\uDE33");
-            list.add("\uD83D\uDE42");
-            list.add("\uD83D\uDE43");
-            list.add("\uD83E\uDD23");
-            list.add("\uD83D\uDE02");
-            list.add("\uD83D\uDE0C");
-            list.add("\uD83D\uDE0E");
-            list.add("\uD83D\uDE44");
-            list.add("\uD83E\uDD14");
-            list.add("\uD83D\uDE37");
-            list.add("\uD83D\uDE09");
-            list.add("\uD83D\uDE18");
-            list.add("\uD83D\uDE1D");
-            list.add("\uD83D\uDE06");
-            list.add("\uD83E\uDD13");
-            list.add("\uD83D\uDE2D");
-            list.add("\uD83D\uDE24");
-            list.add("\uD83D\uDE08");
-            list.add("\uD83D\uDE07");
-            list.add("\uD83D\uDE0A");
-            list.add("\uD83D\uDE29");
-            list.add("\uD83D\uDE15");
-            list.add("\uD83D\uDE12");
-            list.add("\uD83D\uDE0D");
-            list.add("\uD83D\uDE20");
-            list.add("\uD83D\uDE34");
-            list.add("\uD83D\uDE32");
-            list.add("\uD83D\uDE31");
-            list.add("\uD83D\uDE05");
-            list.add("\uD83D\uDE21");
-            list.add("\uD83D\uDE28");
-            list.add("\uD83D\uDE13");
-            list.add("\uD83E\uDD22");
-            list.add("\uD83E\uDD24");
-            list.add("\uD83E\uDD11");
-            list.add("\uD83E\uDD21");
-            list.add("\uD83E\uDD17");
-            list.add("\uD83E\uDD20");
-            list.add("\uD83D\uDE4F");
-            list.add("\uD83D\uDC4D");
-            list.add("\uD83D\uDD95");
-            list.add("\uD83D\uDC4C");
-            list.add("✌");
-            list.add("\uD83E\uDD19");
-            list.add("\uD83D\uDC8D");
-            list.add("\uD83D\uDC8B");
-            list.add("\uD83D\uDC40");
-            list.add("\uD83D\uDC6F");
-            list.add("\uD83D\uDC6C");
-            list.add("\uD83D\uDC74");
-            list.add("\uD83D\uDC75");
-            list.add("\uD83D\uDC7C");
-            list.add("\uD83D\uDC83");
-            list.add("\uD83D\uDE48");
-            list.add("\uD83D\uDE49");
-            list.add("\uD83D\uDE4A");
-            list.add("\uD83D\uDC36");
-            list.add("\uD83E\uDD8A");
-            list.add("\uD83D\uDC31");
-            list.add("\uD83E\uDD84");
-            list.add("\uD83C\uDF1A");
-            list.add("\uD83C\uDF1D");
-            list.add("\uD83C\uDF40");
-            list.add("\uD83C\uDF38");
-            list.add("\uD83D\uDC90");
-            list.add("\uD83C\uDF08");
-            list.add("✨");
-            list.add("\uD83D\uDCA4");
-            list.add("❤");
-            list.add("\uD83D\uDC94");
-            list.add("\uD83D\uDC9A");
-            list.add("\uD83D\uDC95");
-            list.add("\uD83D\uDC96");
-            list.add("\uD83D\uDE06");
-            list.add("\uD83D\uDE10");
-            list.add("\uD83D\uDCA9");
-            list.add("\uD83D\uDC4B");
-            //6.0以上系统
-        }else if (version >= 23){
-            list.add("\uD83D\uDE01");
-            list.add("\uD83D\uDE11");
-            list.add("\uD83D\uDE33");
-            list.add("\uD83D\uDE42");
-            list.add("\uD83D\uDE43");
-            list.add("\uD83D\uDE02");
-            list.add("\uD83D\uDE0C");
-            list.add("\uD83D\uDE0E");
-            list.add("\uD83D\uDE44");
-            list.add("\uD83E\uDD14");
-            list.add("\uD83D\uDE37");
-            list.add("\uD83D\uDE09");
-            list.add("\uD83D\uDE18");
-            list.add("\uD83D\uDE1D");
-            list.add("\uD83D\uDE06");
-            list.add("\uD83E\uDD13");
-            list.add("\uD83D\uDE2D");
-            list.add("\uD83D\uDE24");
-            list.add("\uD83D\uDE08");
-            list.add("\uD83D\uDE07");
-            list.add("\uD83D\uDE0A");
-            list.add("\uD83D\uDE29");
-            list.add("\uD83D\uDE15");
-            list.add("\uD83D\uDE12");
-            list.add("\uD83D\uDE0D");
-            list.add("\uD83D\uDE20");
-            list.add("\uD83D\uDE34");
-            list.add("\uD83D\uDE32");
-            list.add("\uD83D\uDE31");
-            list.add("\uD83D\uDE05");
-            list.add("\uD83D\uDE21");
-            list.add("\uD83D\uDE28");
-            list.add("\uD83D\uDE13");
-            list.add("\uD83E\uDD11");
-            list.add("\uD83E\uDD17");
-            list.add("\uD83D\uDE4F");
-            list.add("\uD83D\uDC4D");
-            list.add("\uD83D\uDD95");
-            list.add("\uD83D\uDC4C");
-            list.add("✌");
-            list.add("\uD83D\uDC8D");
-            list.add("\uD83D\uDC8B");
-            list.add("\uD83D\uDC40");
-            list.add("\uD83D\uDC6C");
-            list.add("\uD83D\uDC74");
-            list.add("\uD83D\uDC75");
-            list.add("\uD83D\uDC7C");
-            list.add("\uD83D\uDC83");
-            list.add("\uD83D\uDE48");
-            list.add("\uD83D\uDE49");
-            list.add("\uD83D\uDE4A");
-            list.add("\uD83D\uDC36");
-            list.add("\uD83D\uDC31");
-            list.add("\uD83E\uDD84");
-            list.add("\uD83C\uDF1A");
-            list.add("\uD83C\uDF1D");
-            list.add("\uD83C\uDF40");
-            list.add("\uD83C\uDF38");
-            list.add("\uD83D\uDC90");
-            list.add("\uD83C\uDF08");
-            list.add("✨");
-            list.add("\uD83D\uDCA4");
-            list.add("❤");
-            list.add("\uD83D\uDC94");
-            list.add("\uD83D\uDC9A");
-            //6.0以下系统
-        }else {
-            list.add("\uD83D\uDE01");
-            list.add("\uD83D\uDE11");
-            list.add("\uD83D\uDE33");
-            list.add("\uD83D\uDE02");
-            list.add("\uD83D\uDE0C");
-            list.add("\uD83D\uDE0E");
-            list.add("\uD83D\uDE37");
-            list.add("\uD83D\uDE09");
-            list.add("\uD83D\uDE18");
-            list.add("\uD83D\uDE1D");
-            list.add("\uD83D\uDE06");
-            list.add("\uD83D\uDE2D");
-            list.add("\uD83D\uDE24");
-            list.add("\uD83D\uDE08");
-            list.add("\uD83D\uDE07");
-            list.add("\uD83D\uDE0A");
-            list.add("\uD83D\uDE29");
-            list.add("\uD83D\uDE15");
-            list.add("\uD83D\uDE12");
-            list.add("\uD83D\uDE0D");
-            list.add("\uD83D\uDE20");
-            list.add("\uD83D\uDE34");
-            list.add("\uD83D\uDE32");
-            list.add("\uD83D\uDE31");
-            list.add("\uD83D\uDE05");
-            list.add("\uD83D\uDE21");
-            list.add("\uD83D\uDE28");
-            list.add("\uD83D\uDE13");
-            list.add("\uD83D\uDE4F");
-            list.add("\uD83D\uDC4D");
-            list.add("\uD83D\uDC4C");
-            list.add("✌");
-            list.add("\uD83D\uDC8D");
-            list.add("\uD83D\uDC8B");
-            list.add("\uD83D\uDC40");
-            list.add("\uD83D\uDC6F");
-            list.add("\uD83D\uDC83");
-            list.add("\uD83D\uDE48");
-            list.add("\uD83D\uDE49");
-            list.add("\uD83D\uDE4A");
-            list.add("\uD83D\uDC36");
-            list.add("\uD83D\uDC31");
-            list.add("\uD83C\uDF1A");
-            list.add("\uD83C\uDF1D");
-            list.add("\uD83C\uDF40");
-            list.add("\uD83C\uDF38");
-            list.add("\uD83D\uDC90");
-            list.add("\uD83C\uDF08");
-            list.add("✨");
-            list.add("\uD83D\uDCA4");
-            list.add("❤");
-            list.add("\uD83D\uDC94");
-            list.add("\uD83D\uDC9A");
-            list.add("\uD83D\uDC95");
-            list.add("\uD83D\uDC96");
-            list.add("\uD83D\uDE06");
-            list.add("\uD83D\uDE10");
-            list.add("\uD83D\uDCA9");
-            list.add("\uD83D\uDC4B");
-        }
-
-
-        return list;
-    }
 }
