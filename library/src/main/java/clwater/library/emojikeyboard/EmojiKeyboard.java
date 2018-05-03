@@ -261,7 +261,7 @@ public class EmojiKeyboard extends LinearLayout {
 
 
         if (itemIndex <= firstItem || itemIndex >= lastItem) {
-            recycleview_emoji_class.scrollToPosition(itemIndex);
+            recycleview_emoji_class.smoothScrollToPosition(itemIndex);
         }
     }
 
