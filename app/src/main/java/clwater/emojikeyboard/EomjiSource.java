@@ -1,4 +1,4 @@
-package clwater.library.emojikeyboard;
+package clwater.emojikeyboard;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,200 +9,137 @@ public class EomjiSource {
     public static List<List<String>> getLists(){
         List<List<String>> lists = new ArrayList<>();
 
-        lists.add(get24());
-        lists.add(get23());
-        lists.add(getbase());
-//        lists.add(getbase());
+        lists.add(getEmoticons());
+        lists.add(getDingbats());
+        lists.add(getTransportAndMapSymbols());
+        lists.add(getEnclosedCharacters());
+        //范围太杂...
+//        lists.add(getUncategorized());
+        lists.add(getAdditionalEmoticons());
+        lists.add(getAdditionalTransportAndMapSymbols());
+        //27的库有些未更新
+//        lists.add(getOtherAdditionalSymbols());
 
         return lists;
     }
 
-    private static List<String> get24(){
-        List<String> list = new ArrayList<>();
-        list.add("1");
-        list.add("\uD83D\uDE01");
-        list.add("\uD83D\uDE11");
-        list.add("\uD83D\uDE33");
-        list.add("\uD83D\uDE42");
-        list.add("\uD83D\uDE43");
-        list.add("\uD83E\uDD23");
-        list.add("\uD83D\uDE02");
-        list.add("\uD83D\uDE0C");
-        list.add("\uD83D\uDE0E");
-        list.add("\uD83D\uDE44");
-        list.add("\uD83E\uDD14");
-        list.add("\uD83D\uDE37");
-        list.add("\uD83D\uDE09");
-        list.add("\uD83D\uDE18");
-        list.add("\uD83D\uDE1D");
-        list.add("\uD83D\uDE06");
-        list.add("\uD83E\uDD13");
-        list.add("\uD83D\uDE2D");
-        list.add("\uD83D\uDE24");
-        list.add("\uD83D\uDE08");
-        list.add("\uD83D\uDE07");
-        list.add("\uD83D\uDE0A");
-        list.add("\uD83D\uDE29");
-        list.add("\uD83D\uDE15");
-        list.add("\uD83D\uDE12");
-        list.add("\uD83D\uDE0D");
-        list.add("\uD83D\uDE20");
-        list.add("\uD83D\uDE34");
-        list.add("\uD83D\uDE32");
-        list.add("\uD83D\uDE31");
-        list.add("\uD83D\uDE05");
-        list.add("\uD83D\uDE21");
-        list.add("\uD83D\uDE28");
-        list.add("\uD83D\uDE13");
-        list.add("\uD83E\uDD22");
-        list.add("\uD83E\uDD24");
-        list.add("\uD83E\uDD11");
-        list.add("\uD83E\uDD21");
-        list.add("\uD83E\uDD17");
-        list.add("\uD83E\uDD20");
-        list.add("\uD83D\uDE4F");
-        list.add("\uD83D\uDC4D");
-        list.add("\uD83D\uDD95");
-        list.add("\uD83D\uDC4C");
-        list.add("\uD83E\uDD19");
-        list.add("\uD83D\uDC8D");
-        list.add("\uD83D\uDC8B");
-        list.add("\uD83D\uDC40");
-        list.add("\uD83D\uDC6F");
-        list.add("\uD83D\uDC6C");
-        list.add("\uD83D\uDC74");
-        list.add("\uD83D\uDC75");
-        list.add("\uD83D\uDC7C");
-        list.add("\uD83D\uDC83");
-        list.add("\uD83D\uDE48");
-        list.add("\uD83D\uDE49");
-        list.add("\uD83D\uDE4A");
-        list.add("\uD83D\uDC36");
-        list.add("\uD83E\uDD8A");
-        list.add("\uD83D\uDC31");
-        list.add("\uD83E\uDD84");
-        list.add("\uD83C\uDF1A");
-        list.add("\uD83C\uDF1D");
-        list.add("\uD83C\uDF40");
-        list.add("\uD83C\uDF38");
-        list.add("\uD83D\uDC90");
-        list.add("\uD83C\uDF08");
-        list.add("✨");
-        list.add("\uD83D\uDCA4");
-        list.add("❤");
-        list.add("\uD83D\uDC94");
-        list.add("\uD83D\uDC9A");
-        list.add("\uD83D\uDC95");
-        list.add("\uD83D\uDC96");
-        list.add("\uD83D\uDE06");
-        list.add("\uD83D\uDE10");
-        list.add("\uD83D\uDCA9");
-        list.add("\uD83D\uDC4B");
-        list.add("1 end");
+    /**
+     * @param unicode
+     * @return
+     * 将unicode转换为String方法
+     */
+    public static String getEmojiByUnicode(int unicode){
+        return new String(Character.toChars(unicode));
+    }
 
+    /**
+     * @return
+     * 1. Emoticons ( 1F601 - 1F64F )
+     */
+    private static List<String> getEmoticons(){
+        List<String> list = new ArrayList<>();
+
+        for (int unicode = 0x1F601 ; unicode < 0x1F64F ; unicode++) {
+            list.add(getEmojiByUnicode(unicode));
+        }
         return list;
     }
 
-    private static List<String> get23(){
+    /**
+     * @return
+     * 2. Dingbats ( 2702 - 27B0 )
+     */
+    private static List<String> getDingbats(){
         List<String> list = new ArrayList<>();
-        list.add("2");
-        list.add("\uD83D\uDE01");
-        list.add("\uD83D\uDE11");
-        list.add("\uD83D\uDE33");
-        list.add("\uD83D\uDE42");
-        list.add("\uD83D\uDE43");
-        list.add("\uD83D\uDE02");
-        list.add("\uD83D\uDE0C");
-        list.add("\uD83D\uDE0E");
-        list.add("\uD83D\uDE44");
-        list.add("\uD83E\uDD14");
-        list.add("\uD83D\uDE37");
-        list.add("\uD83D\uDE09");
-        list.add("\uD83D\uDE18");
-        list.add("\uD83D\uDE1D");
-        list.add("\uD83D\uDE06");
-        list.add("\uD83E\uDD13");
-        list.add("\uD83D\uDE2D");
-        list.add("\uD83D\uDE24");
-        list.add("\uD83D\uDE08");
-        list.add("\uD83D\uDE07");
-        list.add("\uD83D\uDE0A");
-        list.add("\uD83D\uDE29");
-        list.add("\uD83D\uDE15");
-        list.add("\uD83D\uDE12");
-        list.add("\uD83D\uDE0D");
-        list.add("\uD83D\uDE20");
-        list.add("\uD83D\uDE34");
-        list.add("\uD83D\uDE32");
-        list.add("2end");
 
-
+        for (int unicode = 0x2702 ; unicode < 0x27B0 ; unicode++) {
+            list.add(getEmojiByUnicode(unicode));
+        }
         return list;
     }
 
-    private static List<String> getbase(){
+    /**
+     * @return
+     * 3. Transport and map symbols ( 1F680 - 1F6C0 )
+     */
+    private static List<String> getTransportAndMapSymbols(){
         List<String> list = new ArrayList<>();
-        list.add("3");
-        list.add("\uD83D\uDE01");
-        list.add("\uD83D\uDE11");
-        list.add("\uD83D\uDE33");
-        list.add("\uD83D\uDE02");
-        list.add("\uD83D\uDE0C");
-        list.add("\uD83D\uDE0E");
-        list.add("\uD83D\uDE37");
-        list.add("\uD83D\uDE09");
-        list.add("\uD83D\uDE18");
-        list.add("\uD83D\uDE1D");
-        list.add("\uD83D\uDE06");
-        list.add("\uD83D\uDE2D");
-        list.add("\uD83D\uDE24");
-        list.add("\uD83D\uDE08");
-        list.add("\uD83D\uDE07");
-        list.add("\uD83D\uDE0A");
-        list.add("\uD83D\uDE29");
-        list.add("\uD83D\uDE15");
-        list.add("\uD83D\uDE12");
-        list.add("\uD83D\uDE0D");
-        list.add("\uD83D\uDE20");
-        list.add("\uD83D\uDE34");
-        list.add("\uD83D\uDE32");
-        list.add("\uD83D\uDE31");
-        list.add("\uD83D\uDE05");
-        list.add("\uD83D\uDE21");
-        list.add("\uD83D\uDE28");
-        list.add("\uD83D\uDE13");
-        list.add("\uD83D\uDE4F");
-        list.add("\uD83D\uDC4D");
-        list.add("\uD83D\uDC4C");
-        list.add("✌");
-        list.add("\uD83D\uDC8D");
-        list.add("\uD83D\uDC8B");
-        list.add("\uD83D\uDC40");
-        list.add("\uD83D\uDC6F");
-        list.add("\uD83D\uDC83");
-        list.add("\uD83D\uDE48");
-        list.add("\uD83D\uDE49");
-        list.add("\uD83D\uDE4A");
-        list.add("\uD83D\uDC36");
-        list.add("\uD83D\uDC31");
-        list.add("\uD83C\uDF1A");
-        list.add("\uD83C\uDF1D");
-        list.add("\uD83C\uDF40");
-        list.add("\uD83D\uDC90");
-        list.add("\uD83C\uDF08");
-        list.add("✨");
-        list.add("\uD83D\uDCA4");
-        list.add("❤");
-        list.add("\uD83D\uDC94");
-        list.add("\uD83D\uDC9A");
-        list.add("\uD83D\uDC95");
-        list.add("\uD83D\uDC96");
-        list.add("\uD83D\uDE06");
-        list.add("\uD83D\uDE10");
-        list.add("\uD83D\uDCA9");
-        list.add("\uD83D\uDC4B");
-        list.add("3end");
 
+        for (int unicode = 0x1F680 ; unicode < 0x1F6C0 ; unicode++) {
+            list.add(getEmojiByUnicode(unicode));
+        }
         return list;
     }
+
+    /**
+     * @return
+     * 4. Enclosed characters ( 24C2 - 1F251 )
+     * 有点多... 展示未优化
+     */
+    private static List<String> getEnclosedCharacters(){
+        List<String> list = new ArrayList<>();
+
+//        for (int unicode = 0x24C2 ; unicode < 0x1F251 ; unicode++) {
+        for (int unicode = 0x24C2 ; unicode < 0x2500 ; unicode++) {
+            list.add(getEmojiByUnicode(unicode));
+        }
+        return list;
+    }
+
+
+    /**
+     * @return
+     * 5. Uncategorized
+     * 没啥规律...
+     */
+    private static List<String> getUncategorized(){
+        List<String> list = new ArrayList<>();
+
+        for (int unicode = 0 ; unicode < 0 ; unicode++) {
+            list.add(getEmojiByUnicode(unicode));
+        }
+        return list;
+    }
+
+    /**
+     * @return
+     * 6a. Additional emoticons ( 1F600 - 1F636 )
+     */
+    private static List<String> getAdditionalEmoticons(){
+        List<String> list = new ArrayList<>();
+
+        for (int unicode = 0x1F600 ; unicode < 0x1F636 ; unicode++) {
+            list.add(getEmojiByUnicode(unicode));
+        }
+        return list;
+    }
+
+    /**
+     * @return
+     * 6b. Additional transport and map symbols ( 1F681 - 1F6C5 )
+     */
+    private static List<String> getAdditionalTransportAndMapSymbols(){
+        List<String> list = new ArrayList<>();
+
+        for (int unicode = 0x1F681 ; unicode < 0x1F6C5 ; unicode++) {
+            list.add(getEmojiByUnicode(unicode));
+        }
+        return list;
+    }
+    /**
+     * @return
+     * 6c. Other additional symbols ( 1F30D - 1F567 )
+     */
+    private static List<String> getOtherAdditionalSymbols(){
+        List<String> list = new ArrayList<>();
+
+        for (int unicode = 0x1F30D ; unicode < 0x1F567 ; unicode++) {
+            list.add(getEmojiByUnicode(unicode));
+        }
+        return list;
+    }
+
+
+
+
 }

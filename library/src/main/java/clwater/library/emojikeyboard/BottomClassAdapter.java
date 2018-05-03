@@ -51,7 +51,7 @@ public class BottomClassAdapter extends RecyclerView.Adapter<BottomClassAdapter.
     @Override
     public void onBindViewHolder(BottomClassViewHolder holder, int position) {
         if (itemIndex == position){
-            holder.relative_bottom_bg.setBackgroundColor(Color.parseColor("#f9f9f9"));
+            holder.relative_bottom_bg.setBackgroundColor(Color.parseColor("#f0f0f0"));
         }else {
             holder.relative_bottom_bg.setBackgroundColor(Color.parseColor("#ffffff"));
         }
