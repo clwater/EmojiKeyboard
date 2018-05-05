@@ -71,20 +71,20 @@
 
   3. 底部标签页指示器
 
-    简单的一个LinearLayout来展示指示器,没有切换的动画效果,可以优化一波.
+  简单的一个LinearLayout来展示指示器,没有切换的动画效果,可以优化一波.
 
-    ![底部标签页指示器](http://ooymoxvz4.bkt.clouddn.com/18-5-5/32648287.jpg)
+  ![底部标签页指示器](http://ooymoxvz4.bkt.clouddn.com/18-5-5/32648287.jpg)
 
   4. 底部标签选择器
 
-    通过一个RecycleView来实现的底部标签选择器
+  通过一个RecycleView来实现的底部标签选择器
 
-    ![底部标签选择器](http://ooymoxvz4.bkt.clouddn.com/18-5-5/48727751.jpg)
+  ![底部标签选择器](http://ooymoxvz4.bkt.clouddn.com/18-5-5/48727751.jpg)
 
   5. 监听ViewPager滑动及底部标签选择
 
-    添加ViewPager的addOnPageChangeListener方法来监听滑动及底部标签选择的点击回调
+  添加ViewPager的addOnPageChangeListener方法来监听滑动及底部标签选择的点击回调
 
-    ![监听ViewPager滑动及底部标签选择](http://ooymoxvz4.bkt.clouddn.com/18-5-5/18227363.jpg)
+  ![监听ViewPager滑动及底部标签选择](http://ooymoxvz4.bkt.clouddn.com/18-5-5/18227363.jpg)
 
 相关代码可以访问我的[GitHub](https://github.com/clwater/EmojiKeyboard)来获取,欢迎大家start或者提供建议.
