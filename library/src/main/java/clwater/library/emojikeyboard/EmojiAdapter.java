@@ -61,9 +61,11 @@ public class EmojiAdapter extends PagerAdapter {
             int listSize = list.size();
             int itemMaxIndex = listSize / pageMaxCount;
             if (listSize % pageMaxCount != 0) {
+                //获取当前标签最大页数
                 itemMaxIndex += 1;
             }
             listInfo.add(itemMaxIndex);
+            //整个ViewPager最大页数
             maxIndex += itemMaxIndex;
 
             for (int i = 0; i < itemMaxIndex; i++) {
@@ -77,6 +79,7 @@ public class EmojiAdapter extends PagerAdapter {
                         j = pageMaxCount;
                     }
                 }
+                //ViewPager展示的数据源
                 lists.add(tempList);
             }
         }
@@ -109,7 +112,7 @@ public class EmojiAdapter extends PagerAdapter {
         linearLayout.setOrientation(LinearLayout.VERTICAL);
 
 
-        //分成三行展示
+        //分行展示
         for (int index = 0; index < showMaxLines; index++) {
             LinearLayout linearLayoutIndex = new LinearLayout(context);
             linearLayout.addView(linearLayoutIndex);
@@ -121,6 +124,7 @@ public class EmojiAdapter extends PagerAdapter {
             linearLayoutIndex.setGravity(Gravity.CENTER);
 
             for (int i = index * showMaxColumns; i < (index + 1) * showMaxColumns; i++) {
+                //使用自定义View用于展示Emoji
                 CustomTextView textView = new CustomTextView(context);
                 textView.setGravity(Gravity.CENTER);
                 textView.setBackground(context.getDrawable(R.drawable.user_select_bg));
@@ -141,6 +145,7 @@ public class EmojiAdapter extends PagerAdapter {
                     });
                 } else {
                     if (i == pageMaxCount) {
+                        //添加最后的删除按钮
                         linearLayoutIndex.removeView(textView);
                         LinearLayout backLinearLayout = new LinearLayout(context);
                         linearLayoutIndex.addView(backLinearLayout);

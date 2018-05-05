@@ -15,7 +15,6 @@ import java.util.List;
 import clwater.library.R;
 
 /**
- * Created by yszsyf on 2018/5/2.
  * 底部图标Adapter
  */
 public class BottomClassAdapter extends RecyclerView.Adapter<BottomClassAdapter.BottomClassViewHolder> {

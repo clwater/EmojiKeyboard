@@ -10,7 +10,6 @@ import clwater.library.R;
 
 
 /**
- * Created by gengzhibo on 2018/4/24.
  * emoji输入法中的指示器
  */
 
